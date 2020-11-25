@@ -1,6 +1,6 @@
 import big_o
 from big_o import complexities as cmpl
-import gnuplotlib as gp
+import importlib
 import math
 import numpy as np
 from random import shuffle
@@ -13,8 +13,11 @@ from almacenamiento import maximizar
 def _graficar(fitted, titulo):
     xs = fitted['measures']
     ys = fitted['times']
-    gp.plot(xs, ys, _with='lines', terminal='dumb 60,30',
-            unset='grid', title=titulo, xlabel='n', ylabel='tiempo')
+
+    if importlib.util.find_spec('gnuplotlib') is not None:
+        import gnuplotlib as gp
+        gp.plot(xs, ys, _with='lines', terminal='dumb 60,30',
+                unset='grid', title=titulo, xlabel='n', ylabel='tiempo')
 
     for k, v in fitted.items():
         if isinstance(k, big_o.complexities.ComplexityClass):
